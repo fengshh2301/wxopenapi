@@ -4,6 +4,9 @@ const (
 	COMPONENT_VERIFY_TICKET = "component_verify_ticket"
 	COMPONENT_ACCESS_TOKEN  = "component_access_token"
 	PRE_AUTH_CODE           = "pre_auth_code"
+	AUTHORIZED              = "authorized"
+	UNAUTHORIZED            = "unauthorized"
+	UPDATEAUTHORIZED        = "updateauthorized"
 )
 const (
 	FMT_URL_PRE_AUTH_CODE = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=%v&pre_auth_code=%v&redirect_uri=%v&auth_type=%v"
