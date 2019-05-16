@@ -1,12 +1,6 @@
 package wxopenapi
 
 const (
-	STOKEN          = ""
-	SENCODINGAESKEY = ""
-	SAPPID          = ""
-)
-
-const (
 	COMPONENT_VERIFY_TICKET = "component_verify_ticket"
 	COMPONENT_ACCESS_TOKEN  = "component_access_token"
 )

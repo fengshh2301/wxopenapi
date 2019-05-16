@@ -8,6 +8,11 @@ import (
 	"github.com/wxopencrypt"
 )
 
+var STOKEN string
+var SENCODINGAESKEY string
+var SAPPID string
+var SAPPSECRET string
+
 type WxOpen struct {
 	mmutex *sync.RWMutex
 	minfos map[string]string
@@ -24,7 +29,11 @@ func newWxOpen() *WxOpen {
 
 var GWxOpen = newWxOpen()
 
-func (this *WxOpen) Init() {
+func (this *WxOpen) Init(stoken, sencodingaeskey, sappid, sappsecret string) {
+	STOKEN = stoken
+	SENCODINGAESKEY = sencodingaeskey
+	SAPPID = sappid
+	SAPPSECRET = sappsecret
 	this.mcrypt.Init(STOKEN, SENCODINGAESKEY, SAPPID)
 	return
 }
@@ -45,20 +54,21 @@ func (this *WxOpen) SetInfo(key, val string) {
 	return
 }
 
-func (this *WxOpen) update_token_loop() {
+func (this *WxOpen) UpdateTokenLoop() {
+	time.Sleep(10 * time.Second)
 	for {
-		this.update_token()
-		time.Sleep(10 * time.Second)
 		token := this.GetInfo(COMPONENT_ACCESS_TOKEN)
 		if len(token) > 0 {
 			time.Sleep(COMPONENT_ACCESS_TOKEN_UPDATE_SECOND * time.Second)
 		} else {
 
 		}
+		this.UpdateToken()
+		time.Sleep(10 * time.Second)
 	}
 }
 
-func (this *WxOpen) update_token() {
+func (this *WxOpen) UpdateToken() {
 	ticket := this.GetInfo(COMPONENT_VERIFY_TICKET)
 	if len(ticket) > 0 {
 		//DOPOST
