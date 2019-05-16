@@ -3,10 +3,14 @@ package wxopenapi
 const (
 	COMPONENT_VERIFY_TICKET = "component_verify_ticket"
 	COMPONENT_ACCESS_TOKEN  = "component_access_token"
+	PRE_AUTH_CODE           = "pre_auth_code"
+)
+const (
+	FMT_URL_PRE_AUTH_CODE = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=%v&pre_auth_code=%v&redirect_uri=%v&auth_type=%v"
 )
 
 const (
-	COMPONENT_ACCESS_TOKEN_UPDATE_SECOND = 6600
+// COMPONENT_ACCESS_TOKEN_UPDATE_SECOND = 6600
 )
 
 const (
