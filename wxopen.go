@@ -177,7 +177,12 @@ func (this *WxOpen) GetAuthAccessToken(auth_code string) (rsptoken AuthAccessTok
 			var rspobj RspAuthAccessToken
 			json.Unmarshal(rsp, &rspobj)
 			fmt.Println(rspobj)
-			rsptoken = rspobj.AuthorizationInfo
+			rsptoken.ComponentAppid = SAPPID
+			rsptoken.AuthorizerAppid = rspobj.AuthorizationInfo.AuthorizerAppid
+			rsptoken.AuthorizerAccessToken = rspobj.AuthorizationInfo.AuthorizerAccessToken
+			rsptoken.ExpiresIn = rspobj.AuthorizationInfo.ExpiresIn
+			rsptoken.AuthorizerRefreshToken = rspobj.AuthorizationInfo.AuthorizerRefreshToken
+			rsptoken.FuncInfos = append(rsptoken.FuncInfos, rspobj.AuthorizationInfo.FuncInfos...)
 			return
 		} else {
 			fmt.Println("auth_code is empty")
@@ -188,8 +193,8 @@ func (this *WxOpen) GetAuthAccessToken(auth_code string) (rsptoken AuthAccessTok
 	return
 }
 
-func (this *WxOpen) UpdateAuthAccessToken(auth_appid, auth_refresh_token string) (rsptoken RspUpdateAuthAccessToken) {
-	fmt.Println("GetAuthAccessToken ", time.Now().Unix())
+func (this *WxOpen) UpdateAuthAccessToken(auth_appid, auth_refresh_token string) (rsptoken UpdateAuthAccessToken) {
+	fmt.Println("UpdateAuthAccessToken ", time.Now().Unix())
 	access := this.GetInfo(COMPONENT_ACCESS_TOKEN)
 	if len(access.Typ) > 0 {
 		if len(auth_appid) > 0 && len(auth_refresh_token) > 0 {
@@ -211,12 +216,18 @@ func (this *WxOpen) UpdateAuthAccessToken(auth_appid, auth_refresh_token string)
 				}
 				return
 			}
-			// var rspobj RspUpdateAuthAccessToken
-			json.Unmarshal(rsp, &rsptoken)
-			fmt.Println(rsptoken)
+			var rspobj RspUpdateAuthAccessToken
+			json.Unmarshal(rsp, &rspobj)
+			fmt.Println(rspobj)
+			rsptoken.ComponentAppid = SAPPID
+			rsptoken.AuthorizerAppid = auth_appid
+			rsptoken.AuthorizerAccessToken = rspobj.AuthorizerAccessToken
+			rsptoken.ExpiresIn = rspobj.ExpiresIn
+			rsptoken.AuthorizerRefreshToken = rspobj.AuthorizerRefreshToken
+			// rsptoken.FuncInfos = append(rsptoken.FuncInfos, rspobj.FuncInfos...)
 			return
 		} else {
-			fmt.Println("auth_code is empty")
+			fmt.Println("auth_appid or auth_refresh_token is empty")
 		}
 	} else {
 		fmt.Println("access is empty")

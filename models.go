@@ -47,7 +47,7 @@ type FuncscopeCategory struct {
 type FuncInfo struct {
 	FuncCat FuncscopeCategory `json:"funcscope_category"`
 }
-type AuthAccessToken struct {
+type AuthAccessTokenInfo struct {
 	AuthorizerAppid        string     `json:"authorizer_appid"`
 	AuthorizerAccessToken  string     `json:"authorizer_access_token"`
 	ExpiresIn              int        `json:"expires_in"`
@@ -55,7 +55,16 @@ type AuthAccessToken struct {
 	FuncInfos              []FuncInfo `json:"func_info"`
 }
 type RspAuthAccessToken struct {
-	AuthorizationInfo AuthAccessToken `json:"authorization_info"`
+	AuthorizationInfo AuthAccessTokenInfo `json:"authorization_info"`
+}
+
+type AuthAccessToken struct {
+	ComponentAppid         string
+	AuthorizerAppid        string
+	AuthorizerAccessToken  string
+	ExpiresIn              int
+	AuthorizerRefreshToken string
+	FuncInfos              []FuncInfo
 }
 
 type ReqUpdateAuthAccessToken struct {
@@ -67,4 +76,12 @@ type RspUpdateAuthAccessToken struct {
 	AuthorizerAccessToken  string `json:"authorizer_access_token"`
 	ExpiresIn              int    `json:"expires_in"`
 	AuthorizerRefreshToken string `json:"authorizer_refresh_token"`
+}
+
+type UpdateAuthAccessToken struct {
+	ComponentAppid         string
+	AuthorizerAppid        string
+	AuthorizerAccessToken  string
+	ExpiresIn              int
+	AuthorizerRefreshToken string
 }
