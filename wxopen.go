@@ -14,7 +14,7 @@ var STOKEN string
 var SENCODINGAESKEY string
 var SAPPID string
 var SAPPSECRET string
-var URL_AUTH_NOTIFY string
+var URL_AUTHORIZATION_CODE string
 
 type WxOpen struct {
 	mout_info func(string, string, int64, int)
@@ -154,10 +154,10 @@ func (this *WxOpen) UpdatePreAuthCode() {
 
 func (this *WxOpen) GetPreAuthUrl() string {
 	preauthcode := this.GetInfo(PRE_AUTH_CODE)
-	if len(SAPPID) <= 0 || len(preauthcode.Typ) <= 0 || len(URL_AUTH_NOTIFY) <= 0 {
+	if len(SAPPID) <= 0 || len(preauthcode.Typ) <= 0 || len(URL_AUTHORIZATION_CODE) <= 0 {
 		return ""
 	}
-	url := fmt.Sprintf(FMT_URL_PRE_AUTH_CODE, SAPPID, preauthcode.Info, URL_AUTH_NOTIFY, 3)
+	url := fmt.Sprintf(FMT_URL_PRE_AUTH_CODE, SAPPID, preauthcode.Info, URL_AUTHORIZATION_CODE, 3)
 	return url
 }
 
