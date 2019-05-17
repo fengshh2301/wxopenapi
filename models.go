@@ -19,20 +19,11 @@ type OpenToken struct {
 	Info      string
 }
 
-// <AppId>第三方平台appid</AppId>
-// <CreateTime>1413192760</CreateTime>
-// <InfoType>updateauthorized</InfoType>
-// <AuthorizerAppid>公众号appid</AuthorizerAppid>
-// <AuthorizationCode>授权码（code）</AuthorizationCode>
-// <AuthorizationCodeExpiredTime>过期时间</AuthorizationCodeExpiredTime>
-// <PreAuthCode>预授权码</PreAuthCode>
-
 type ReqAccessToken struct {
 	ComponentAppid        string `json:"component_appid"`
 	ComponentAppsecret    string `json:"component_appsecret"`
 	ComponentVerifyTicket string `json:"component_verify_ticket"`
 }
-
 type RspAccessToken struct {
 	ComponentAccessToken string `json:"component_access_token"`
 	ExpiresIn            int    `json:"expires_in"`
@@ -41,8 +32,39 @@ type RspAccessToken struct {
 type ReqPreAuthCode struct {
 	ComponentAppid string `json:"component_appid"`
 }
-
 type RspPreAuthCode struct {
 	PreAuthCode string `json:"pre_auth_code"`
 	ExpiresIn   int    `json:"expires_in"`
+}
+
+type ReqAuthAccessToken struct {
+	ComponentAppid    string `json:"component_appid"`
+	AuthorizationCode string `json:"authorization_code"`
+}
+type FuncscopeCategory struct {
+	Id int `json:"id"`
+}
+type FuncInfo struct {
+	FuncCat FuncscopeCategory `json:"funcscope_category"`
+}
+type AuthAccessToken struct {
+	AuthorizerAppid        string     `json:"authorizer_appid"`
+	AuthorizerAccessToken  string     `json:"authorizer_access_token"`
+	ExpiresIn              int        `json:"expires_in"`
+	AuthorizerRefreshToken string     `json:"authorizer_refresh_token"`
+	FuncInfos              []FuncInfo `json:"func_info"`
+}
+type RspAuthAccessToken struct {
+	AuthorizationInfo AuthAccessToken `json:"authorization_info"`
+}
+
+type ReqUpdateAuthAccessToken struct {
+	ComponentAppid         string `json:"component_appid"`
+	AuthorizerAppid        string `json:"authorizer_appid"`
+	AuthorizerRefreshToken string `json:"authorizer_refresh_token"`
+}
+type RspUpdateAuthAccessToken struct {
+	AuthorizerAccessToken  string `json:"authorizer_access_token"`
+	ExpiresIn              int    `json:"expires_in"`
+	AuthorizerRefreshToken string `json:"authorizer_refresh_token"`
 }

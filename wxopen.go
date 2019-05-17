@@ -152,6 +152,78 @@ func (this *WxOpen) UpdatePreAuthCode() {
 	}
 }
 
+func (this *WxOpen) GetAuthAccessToken(auth_code string) (rsptoken AuthAccessToken) {
+	fmt.Println("GetAuthAccessToken ", time.Now().Unix())
+	access := this.GetInfo(COMPONENT_ACCESS_TOKEN)
+	if len(access.Typ) > 0 {
+		if len(auth_code) > 0 {
+			fmt.Println("auth_code is ", auth_code)
+			var req ReqAuthAccessToken
+			req.ComponentAppid = SAPPID
+			req.AuthorizationCode = auth_code
+			reqstr, _ := json.Marshal(req)
+			rsp, err := PostJsonByte(fmt.Sprintf(URL_AUTHORIZER_ACCESS, access.Info), reqstr)
+			if err != nil {
+				fmt.Println("请求 AuthAccessToken 失败 err", err.Error())
+				return
+			}
+			if strings.Contains(string(rsp), "errcode") {
+				fmt.Println("请求 AuthAccessToken 失败 rsp", string(rsp))
+				if strings.Contains(string(rsp), "access_token expired") {
+					this.UpdateAccessToken()
+				}
+				return
+			}
+			var rspobj RspAuthAccessToken
+			json.Unmarshal(rsp, &rspobj)
+			fmt.Println(rspobj)
+			rsptoken = rspobj.AuthorizationInfo
+			return
+		} else {
+			fmt.Println("auth_code is empty")
+		}
+	} else {
+		fmt.Println("access is empty")
+	}
+	return
+}
+
+func (this *WxOpen) UpdateAuthAccessToken(auth_appid, auth_refresh_token string) (rsptoken RspUpdateAuthAccessToken) {
+	fmt.Println("GetAuthAccessToken ", time.Now().Unix())
+	access := this.GetInfo(COMPONENT_ACCESS_TOKEN)
+	if len(access.Typ) > 0 {
+		if len(auth_appid) > 0 && len(auth_refresh_token) > 0 {
+			fmt.Println("auth_appid, auth_refresh_token is ", auth_appid, auth_refresh_token)
+			var req ReqUpdateAuthAccessToken
+			req.ComponentAppid = SAPPID
+			req.AuthorizerAppid = auth_appid
+			req.AuthorizerRefreshToken = auth_refresh_token
+			reqstr, _ := json.Marshal(req)
+			rsp, err := PostJsonByte(fmt.Sprintf(URL_AUTHORIZER_ACCESS_REFRESH, access.Info), reqstr)
+			if err != nil {
+				fmt.Println("请求 UpdateAuthAccessToken 失败 err", err.Error())
+				return
+			}
+			if strings.Contains(string(rsp), "errcode") {
+				fmt.Println("请求 UpdateAuthAccessToken 失败 rsp", string(rsp))
+				if strings.Contains(string(rsp), "access_token expired") {
+					this.UpdateAccessToken()
+				}
+				return
+			}
+			// var rspobj RspUpdateAuthAccessToken
+			json.Unmarshal(rsp, &rsptoken)
+			fmt.Println(rsptoken)
+			return
+		} else {
+			fmt.Println("auth_code is empty")
+		}
+	} else {
+		fmt.Println("access is empty")
+	}
+	return
+}
+
 func (this *WxOpen) GetPreAuthUrl() string {
 	preauthcode := this.GetInfo(PRE_AUTH_CODE)
 	if len(SAPPID) <= 0 || len(preauthcode.Typ) <= 0 || len(URL_AUTHORIZATION_CODE) <= 0 {
