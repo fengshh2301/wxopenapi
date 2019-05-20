@@ -31,7 +31,7 @@ const (
 	// 请注意，此处token是2小时刷新一次，开发者需要自行进行token的缓存，避免token的获取次数达到每日的限定额度。
 	// 缓存方法可以参考：http://mp.weixin.qq.com/wiki/2/88b2bf1265a707c031e51f26ca5e6512.html
 	// 当换取authorizer_refresh_token后建议保存。
-	URL_AUTHORIZER_ACCESS_REFRESH = "https:// api.weixin.qq.com /cgi-bin/component/api_authorizer_token?component_access_token=%v"
+	URL_AUTHORIZER_ACCESS_REFRESH = "https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token=%v"
 	// 该API用于获取授权方的基本信息，包括头像、昵称、帐号类型、认证类型、微信号、原始ID和二维码图片URL。
 	// 需要特别记录授权方的帐号类型，在消息及事件推送时，对于不具备客服接口的公众号，需要在5秒内立即响应；
 	// 而若有客服接口，则可以选择暂时不响应，而选择后续通过客服接口来发送消息触达粉丝。
