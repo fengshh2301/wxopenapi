@@ -193,6 +193,42 @@ func (this *WxOpen) GetAuthAccessToken(auth_code string) (rsptoken AuthAccessTok
 	return
 }
 
+func (this *WxOpen) GetAuthInfo(auth_appid string) (rsptoken RspAuthInfo) {
+	fmt.Println("GetAuthInfo ", time.Now().Unix())
+	access := this.GetInfo(COMPONENT_ACCESS_TOKEN)
+	if len(access.Typ) > 0 {
+		if len(auth_appid) > 0 {
+			fmt.Println("auth_appid is ", auth_appid)
+			var req ReqAuthInfo
+			req.ComponentAppid = SAPPID
+			req.AuthorizerAppid = auth_appid
+			reqstr, _ := json.Marshal(req)
+			rsp, err := PostJsonByte(fmt.Sprintf(URL_AUTHORIZER_INFO, access.Info), reqstr)
+			if err != nil {
+				fmt.Println("请求 AuthInfo 失败 err", err.Error())
+				return
+			}
+			if strings.Contains(string(rsp), "errcode") {
+				fmt.Println("请求 AuthInfo 失败 rsp", string(rsp))
+				if strings.Contains(string(rsp), "access_token expired") {
+					this.UpdateAccessToken()
+				}
+				return
+			}
+			// var rspobj RspAuthInfo
+			json.Unmarshal(rsp, &rsptoken)
+			rsptoken.ComponentAppid = SAPPID
+			fmt.Println(rsptoken)
+			return
+		} else {
+			fmt.Println("auth_appid is empty")
+		}
+	} else {
+		fmt.Println("access is empty")
+	}
+	return
+}
+
 func (this *WxOpen) UpdateAuthAccessToken(auth_appid, auth_refresh_token string) (rsptoken UpdateAuthAccessToken) {
 	fmt.Println("UpdateAuthAccessToken ", time.Now().Unix())
 	access := this.GetInfo(COMPONENT_ACCESS_TOKEN)

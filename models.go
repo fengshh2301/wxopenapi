@@ -1,5 +1,15 @@
 package wxopenapi
 
+type OpenToken struct {
+	Typ       string
+	CreatedAt int64
+	ExpiredAt int64
+	ExpiredIn int
+	Info      string
+}
+
+//1.com ticket
+//4.auth code
 type NotifyAuth struct {
 	AppId                        string
 	CreateTime                   string
@@ -11,14 +21,7 @@ type NotifyAuth struct {
 	PreAuthCode                  string
 }
 
-type OpenToken struct {
-	Typ       string
-	CreatedAt int64
-	ExpiredAt int64
-	ExpiredIn int
-	Info      string
-}
-
+//2.com access token
 type ReqAccessToken struct {
 	ComponentAppid        string `json:"component_appid"`
 	ComponentAppsecret    string `json:"component_appsecret"`
@@ -29,6 +32,7 @@ type RspAccessToken struct {
 	ExpiresIn            int    `json:"expires_in"`
 }
 
+//3.com preauthcode
 type ReqPreAuthCode struct {
 	ComponentAppid string `json:"component_appid"`
 }
@@ -37,6 +41,8 @@ type RspPreAuthCode struct {
 	ExpiresIn   int    `json:"expires_in"`
 }
 
+//5.auth access token
+//5-1
 type ReqAuthAccessToken struct {
 	ComponentAppid    string `json:"component_appid"`
 	AuthorizationCode string `json:"authorization_code"`
@@ -57,7 +63,6 @@ type AuthAccessTokenInfo struct {
 type RspAuthAccessToken struct {
 	AuthorizationInfo AuthAccessTokenInfo `json:"authorization_info"`
 }
-
 type AuthAccessToken struct {
 	ComponentAppid         string
 	AuthorizerAppid        string
@@ -67,6 +72,7 @@ type AuthAccessToken struct {
 	FuncInfos              []FuncInfo
 }
 
+//5-2
 type ReqUpdateAuthAccessToken struct {
 	ComponentAppid         string `json:"component_appid"`
 	AuthorizerAppid        string `json:"authorizer_appid"`
@@ -84,4 +90,43 @@ type UpdateAuthAccessToken struct {
 	AuthorizerAccessToken  string
 	ExpiresIn              int
 	AuthorizerRefreshToken string
+}
+
+//6.auth info
+type ReqAuthInfo struct {
+	ComponentAppid  string `json:"component_appid"`
+	AuthorizerAppid string `json:"authorizer_appid"`
+}
+type TypeInfo struct {
+	Id int `json:"id"`
+}
+type BusiInfo struct {
+	OpenPay   int `json:"open_pay"`
+	OpenShake int `json:"open_shake"`
+	OpenScan  int `json:"open_scan"`
+	OpenCard  int `json:"open_card"`
+	OpenStore int `json:"open_store"`
+}
+type RspAuthorizerInfo struct {
+	NickName        string   `json:"nick_name"`
+	HeadImg         string   `json:"head_img"`
+	ServiceTypeInfo TypeInfo `json:"service_type_info"`
+	VerifyTypeInfo  TypeInfo `json:"verify_type_info"`
+	UserName        string   `json:"user_name"`
+	Alias           string   `json:"alias"`
+	QrcodeUrl       string   `json:"qrcode_url"`
+	BusinessInfo    BusiInfo `json:"business_info"`
+	Idc             int      `json:"idc"`
+	PrincipalName   string   `json:"principal_name"`
+	Signature       string   `json:"signature"`
+}
+type RspAuthorizationInfo struct {
+	AuthorizerAppid        string     `json:"authorizer_appid"`
+	AuthorizerRefreshToken string     `json:"authorizer_refresh_token"`
+	FuncInfos              []FuncInfo `json:"func_info"`
+}
+type RspAuthInfo struct {
+	ComponentAppid    string
+	AuthorizerInfo    RspAuthorizerInfo    `json:"authorizer_info"`
+	AuthorizationInfo RspAuthorizationInfo `json:"authorization_info"`
 }
