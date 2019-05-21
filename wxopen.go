@@ -276,7 +276,16 @@ func (this *WxOpen) GetPreAuthUrl() string {
 	if len(SAPPID) <= 0 || len(preauthcode.Typ) <= 0 || len(URL_AUTHORIZATION_CODE) <= 0 {
 		return ""
 	}
-	url := fmt.Sprintf(FMT_URL_PRE_AUTH_CODE, SAPPID, preauthcode.Info, URL_AUTHORIZATION_CODE, 3)
+	url := fmt.Sprintf(FMT_URL_PRE_AUTH_CODE, SAPPID, preauthcode.Info, URL_AUTHORIZATION_CODE, AUTH_TYPE_ALL)
+	return url
+}
+
+func (this *WxOpen) GetLocalPreAuthUrl() string {
+	preauthcode := this.GetInfo(PRE_AUTH_CODE)
+	if len(SAPPID) <= 0 || len(preauthcode.Typ) <= 0 || len(URL_AUTHORIZATION_CODE) <= 0 {
+		return ""
+	}
+	url := fmt.Sprintf(FMT_URL_LOCAL_PRE_AUTH_CODE, SAPPID, preauthcode.Info, URL_AUTHORIZATION_CODE, AUTH_TYPE_ALL)
 	return url
 }
 

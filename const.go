@@ -9,11 +9,14 @@ const (
 	UPDATEAUTHORIZED        = "updateauthorized"
 )
 const (
-	FMT_URL_PRE_AUTH_CODE = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=%v&pre_auth_code=%v&redirect_uri=%v&auth_type=%v"
+	FMT_URL_PRE_AUTH_CODE       = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=%v&pre_auth_code=%v&redirect_uri=%v&auth_type=%v"
+	FMT_URL_LOCAL_PRE_AUTH_CODE = "https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&no_scan=1&component_appid=%v&pre_auth_code=%v&redirect_uri=%v&auth_type=%v&biz_appid=xxxx#wechat_redirect"
 )
 
 const (
-// COMPONENT_ACCESS_TOKEN_UPDATE_SECOND = 6600
+	AUTH_TYPE_GZH = 1 //1则商户点击链接后，手机端仅展示公众号
+	AUTH_TYPE_XCX = 2 //2表示仅展示小程序
+	AUTH_TYPE_ALL = 3 //3表示公众号和小程序都展示
 )
 
 const (
