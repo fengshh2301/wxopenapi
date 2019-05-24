@@ -130,3 +130,21 @@ type RspAuthInfo struct {
 	AuthorizerInfo    RspAuthorizerInfo    `json:"authorizer_info"`
 	AuthorizationInfo RspAuthorizationInfo `json:"authorization_info"`
 }
+
+//7.material
+type ReqMaterial struct {
+	Type   string `json:"type"`
+	Offset int    `json:"offset"`
+	Count  int    `json:"count"`
+}
+type RspMaterialItem struct {
+	MediaId    string `json:"media_id"`
+	Name       string `json:"name"`
+	UpdateTime int    `json:"update_time"`
+	Url        string `json:"url"`
+}
+type RspMaterial struct {
+	Item       []RspMaterialItem `json:"item"`
+	TotalCount int               `json:"total_count"`
+	ItemCount  int               `json:"item_count"`
+}

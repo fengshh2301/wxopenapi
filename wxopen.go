@@ -2,6 +2,7 @@ package wxopenapi
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -291,4 +292,35 @@ func (this *WxOpen) GetLocalPreAuthUrl() string {
 
 func (this *WxOpen) Decrypt(sMsgSignature string, sTimeStamp string, sNonce string, sPostData string) (ret int, sMsg string) {
 	return this.mcrypt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, sPostData)
+}
+
+func (this *WxOpen) GetMaterial(access_token string, req ReqMaterial) (rspobj RspMaterial, err error) {
+	fmt.Println("GetMaterial ", time.Now().Unix())
+	if len(access_token) > 0 {
+		fmt.Println("auth_appid is ", access_token)
+		reqstr, _ := json.Marshal(req)
+		var rsp []byte
+		rsp, err = PostJsonByte(fmt.Sprintf(URL_MATERIAL, access_token), reqstr)
+		if err != nil {
+			fmt.Println("请求 Material 失败 err", err.Error())
+			return
+		}
+		if strings.Contains(string(rsp), "errcode") {
+			fmt.Println("请求 Material 失败 rsp", string(rsp))
+			if strings.Contains(string(rsp), "access_token expired") {
+				err = errors.New("口令过期")
+			} else {
+				err = errors.New(string(rsp))
+			}
+			return
+		}
+		// var rspobj RspMaterial
+		json.Unmarshal(rsp, &rspobj)
+		// rspobj.ComponentAppid = SAPPID
+		fmt.Println(rspobj)
+		return
+	} else {
+		fmt.Println("access_token is empty")
+	}
+	return
 }
