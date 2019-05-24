@@ -137,11 +137,30 @@ type ReqMaterial struct {
 	Offset int    `json:"offset"`
 	Count  int    `json:"count"`
 }
+type RspNewsItem struct {
+	Title              string `json:"title"`
+	Author             string `json:"author"`
+	Digest             string `json:"digest"`
+	Content            string `json:"content"`
+	ContentSourceUrl   string `json:"content_source_url"`
+	ThumbMediaId       string `json:"thumb_media_id"`
+	ShowCoverPic       int    `json:"show_cover_pic"`
+	Url                string `json:"url"`
+	ThumbUrl           string `json:"thumb_url"`
+	NeedOpenComment    int    `json:"need_open_comment"`
+	OnlyFansCanComment int    `json:"only_fans_can_comment"`
+}
+type RspNewsContent struct {
+	NewsItem   []RspNewsItem `json:"news_item"`
+	CreateTime int           `json:"create_time"`
+	UpdateTime int           `json:"update_time"`
+}
 type RspMaterialItem struct {
-	MediaId    string `json:"media_id"`
-	Name       string `json:"name"`
-	UpdateTime int    `json:"update_time"`
-	Url        string `json:"url"`
+	MediaId    string         `json:"media_id"`
+	Name       string         `json:"name"`
+	UpdateTime int            `json:"update_time"`
+	Url        string         `json:"url"`
+	Content    RspNewsContent `json:"content"`
 }
 type RspMaterial struct {
 	Item       []RspMaterialItem `json:"item"`
